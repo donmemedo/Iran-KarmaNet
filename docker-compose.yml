@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      DEMO_OTP: "1"   # returns the OTP in the API response; set "0" once an SMS provider is wired
+    volumes: [karma-data:/data]
+    ports: ["${BACKEND_PORT:-8032}:8000"]
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    depends_on: [backend]
+    ports: ["${FRONTEND_PORT:-3032}:80"]
+    restart: unless-stopped
+
+volumes:
+  karma-data:
